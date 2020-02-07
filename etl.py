@@ -2,7 +2,17 @@ import configparser
 import psycopg2
 from sql_queries import copy_table_queries, insert_table_queries
 
-
+def create_database():
+    config = configparser.ConfigParser()
+    config.read('redshift/dwh.cfg')
+    
+    # connect to default database
+    conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(
+    *config['CLUSTER'].values()))
+    cur = conn.cursor()
+    
+    return cur, conn
+    
 def load_staging_tables(cur, conn):
     for query in copy_table_queries:
         cur.execute(query)
@@ -10,19 +20,17 @@ def load_staging_tables(cur, conn):
 
 
 def insert_tables(cur, conn):
+    
+    q1 = "INSERT INTO users (SELECT userId, firstName, lastName, gender, level FROM staging_events)"
     for query in insert_table_queries:
         cur.execute(query)
         conn.commit()
 
 
 def main():
-    config = configparser.ConfigParser()
-    config.read('dwh.cfg')
-
-    conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(*config['CLUSTER'].values()))
-    cur = conn.cursor()
+    cur, conn = create_database()
     
-    load_staging_tables(cur, conn)
+    #load_staging_tables(cur, conn)
     insert_tables(cur, conn)
 
     conn.close()
