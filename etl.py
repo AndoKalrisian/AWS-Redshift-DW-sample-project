@@ -14,15 +14,17 @@ def create_database():
     return cur, conn
     
 def load_staging_tables(cur, conn):
+    print("Loading staging tables.")
     for query in copy_table_queries:
+        print("Executing query: ", query)
         cur.execute(query)
         conn.commit()
 
 
 def insert_tables(cur, conn):
-    
-    q1 = "INSERT INTO users (SELECT userId, firstName, lastName, gender, level FROM staging_events)"
+    print("Inserting data into tables.")
     for query in insert_table_queries:
+        print("Executing query: ", query)
         cur.execute(query)
         conn.commit()
 
