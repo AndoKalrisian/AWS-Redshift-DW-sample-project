@@ -1,4 +1,3 @@
-#import pandas as pd
 import boto3
 import json
 import configparser
@@ -114,21 +113,21 @@ def main():
   # Load credentials from config file
   config_aws_cred = configparser.ConfigParser()
   try:
-    config_aws_cred.read_file(open('aws_do_not_share.cfg'))
+    config_aws_cred.read_file(open('redshift/aws_do_not_share.cfg'))
   except Exception as e:
     print(e)
   
   # load redshift cluster config settings from config file
   config_redshift = configparser.ConfigParser()
   try:
-    config_redshift.read_file(open('aws_setup.cfg'))
+    config_redshift.read_file(open('redshift/aws_setup.cfg'))
   except Exception as e:
     print(e)
 
   # Load DWH Params from config file
   config_dwh = configparser.ConfigParser()
   try:
-    config_dwh.read_file(open('dwh.cfg'))
+    config_dwh.read_file(open('redshift/dwh.cfg'))
   except Exception as e:
     print(e)
 
@@ -152,12 +151,6 @@ def main():
                           aws_access_key_id=KEY,
                           aws_secret_access_key=SECRET
                       )
-
-  # s3 = boto3.resource('s3',
-  #                       region_name="us-west-2",
-  #                       aws_access_key_id=KEY,
-  #                       aws_secret_access_key=SECRET
-  #                   )
 
   iam = boto3.client('iam',
                       aws_access_key_id=KEY,

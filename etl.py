@@ -32,7 +32,7 @@ def insert_tables(cur, conn):
 def main():
     cur, conn = create_database()
     
-    #load_staging_tables(cur, conn)
+    load_staging_tables(cur, conn)
     insert_tables(cur, conn)
 
     conn.close()
