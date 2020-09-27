@@ -1,4 +1,4 @@
-# Project: Data Warehouse
+# Project: AWS Redshift Data Warehouse
 
 ## Purpose
 
